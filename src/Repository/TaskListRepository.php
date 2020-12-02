@@ -31,6 +31,27 @@ class TaskListRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findSummarizedTaskListFor(User $user)
+    {
+        $dql = <<<DQL
+            SELECT new App\TaskList\SummarizedTaskList(
+                list.id,
+                list.name,
+                list.archived,
+                list.created,
+                list.lastUpdated,
+                SIZE(list.items)
+            )
+            FROM App\Entity\TaskList list
+            WHERE list.owner = :owner
+        DQL;
+
+        return $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('owner', $user)
+            ->getResult();
+    }
+
     public function findAllFor(User $user)
     {
         $sql = <<<SQL
@@ -51,7 +72,14 @@ class TaskListRepository extends ServiceEntityRepository
 
     public function findListsContributedBy(User $contributor)
     {
-        // ???
+        $queryBuilder = $this->createQueryBuilder('task_list');
+
+        return $queryBuilder
+            ->join('task_list.contributors', 'contributors')
+            ->where('contributors = :contributor')
+            ->setParameter('contributor', $contributor)
+            ->getQuery()
+            ->getResult();
     }
 
     public function findArchived(User $owner)
