@@ -8,7 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="app_task_list")
+ * @ORM\Table(
+ *     name="app_task_list",
+ *     indexes={
+ *         @ORM\Index(name="idx_name", columns={"name"})
+ *     }
+ * )
  */
 class TaskList
 {
