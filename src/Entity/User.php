@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Data\Address;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,11 +33,16 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Embedded(class="App\Entity\Data\Address", columnPrefix="address_")
+     */
+    private $address;
+
+    /**
      * @ORM\Column(name="password", length=100)
      */
     private $encodedPassword = '';
 
-    public function __construct(string $name, string $email)
+    public function __construct(string $name, string $email, Address $address)
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             throw new InvalidArgumentException('The provided email is invalid');
@@ -44,6 +50,7 @@ class User implements UserInterface
 
         $this->name = $name;
         $this->email = $email;
+        $this->address = $address;
     }
 
     public function updatePassword(string $encodedPassword): void
