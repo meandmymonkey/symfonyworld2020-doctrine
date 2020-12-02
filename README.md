@@ -21,7 +21,7 @@ Installation (development)
 1. Clone repository
 
     ```bash
-    git clone https://github.com/dbrumann/todo-app.git
+    git clone https://github.com/meandmymonkey/symfonyworld2020-doctrine
     ```
 
 1. Install dependencies
