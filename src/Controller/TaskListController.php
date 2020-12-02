@@ -27,13 +27,13 @@ class TaskListController extends AbstractController
                 break;
             /*case 'contributing':
                 $taskLists = $taskListRepository->findListsContributedBy($this->getUser());
-                break;
+                break;*/
             case 'active':
                 $taskLists = $taskListRepository->findActive($this->getUser());
                 break;
             case 'archived':
                 $taskLists = $taskListRepository->findArchived($this->getUser());
-                break;*/
+                break;
             default:
                 $taskLists = $taskListRepository->findAll();
         }

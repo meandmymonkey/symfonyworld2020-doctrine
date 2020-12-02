@@ -16,10 +16,31 @@ class TaskListRepository extends ServiceEntityRepository
         parent::__construct($registry, TaskList::class);
     }
 
-    public function findListsOwnedBy(User $user)
+    public function findListsOwnedBy(User $owner)
     {
-        //
+        $dql = <<<DQL
+            SELECT task_list
+            FROM App\Entity\TaskList task_list
+            WHERE task_list.owner = :owner
+        DQL;
 
-        return [];
+        return $this->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('owner', $owner)
+            ->getResult();
+    }
+
+    public function findArchived(User $owner)
+    {
+        return $this->createQueryBuilder('task_list')
+            ->andWhere('task_list.archived = true AND task_list.owner = :owner')
+            ->setParameter('owner', $owner)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findActive(User $owner)
+    {
+
     }
 }
