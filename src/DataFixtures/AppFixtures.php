@@ -20,18 +20,33 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
-        $user = new User('Jane Doe', 'jane.doe@example.com', new Address('10 Bakerstreet', '12345', 'London'));
-        $user->updatePassword($this->encoder->encodePassword($user, 'test123'));
+        $jane = new User('Jane Doe', 'jane.doe@example.com', new Address('10 Bakerstreet', '12345', 'London'));
+        $jane->updatePassword($this->encoder->encodePassword($jane, 'test123'));
 
-        $manager->persist($user);
+        $manager->persist($jane);
 
-        $taskList = new TaskList($user, 'SymfonyWorld 2020');
-        $taskList->addItem('Prepare Workshop');
-        $taskList->addItem('Setup Zoom Meeting');
-        $taskList->addItem('Check Mic');
-        $taskList->addItem('Create GitHub repository');
+        $john = new User('John Doe', 'john.doe@example.com', new Address('10 Bakerstreet', '12345', 'London'));
+        $john->updatePassword($this->encoder->encodePassword($jane, 'test123'));
 
-        $manager->persist($taskList);
+        $manager->persist($john);
+
+        $janesList = new TaskList($jane, 'SymfonyWorld 2020');
+        $janesList->addItem('Prepare Workshop');
+        $janesList->addItem('Setup Zoom Meeting');
+        $janesList->addItem('Check Mic');
+        $janesList->addItem('Create GitHub repository');
+
+        $janesList->addContributor($john);
+
+        $manager->persist($janesList);
+
+        $johnsList = new TaskList($john, 'SymfonyWorld 2021');
+        $johnsList->addItem('Prepare Workshop');
+        $johnsList->addItem('Setup Zoom Meeting');
+        $johnsList->addItem('Check Mic');
+        $johnsList->addItem('Create GitHub repository');
+
+        $manager->persist($johnsList);
 
         $manager->flush();
     }

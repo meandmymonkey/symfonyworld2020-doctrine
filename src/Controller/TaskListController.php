@@ -25,9 +25,9 @@ class TaskListController extends AbstractController
             case 'own':
                 $taskLists = $taskListRepository->findListsOwnedBy($this->getUser());
                 break;
-            /*case 'contributing':
+            case 'contributing':
                 $taskLists = $taskListRepository->findListsContributedBy($this->getUser());
-                break;*/
+                break;
             case 'active':
                 $taskLists = $taskListRepository->findActive($this->getUser());
                 break;
@@ -35,7 +35,7 @@ class TaskListController extends AbstractController
                 $taskLists = $taskListRepository->findArchived($this->getUser());
                 break;
             default:
-                $taskLists = $taskListRepository->findAll();
+                $taskLists = $taskListRepository->findAllFor($this->getUser());
         }
 
         return $this->render('tasks/index.html.twig', [
